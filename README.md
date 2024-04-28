@@ -1,4 +1,4 @@
-Authentication from Scratch with Bcrypt
+# Authentication from Scratch with Bcrypt
 
 Tech Stack
 - Node
