@@ -26,6 +26,7 @@ router.post("/register", requireNOLogin, async (req, res) => {
     req.session.userId = user._id;
     req.session.userName = user.userName;
 
+    req.flash("success", "Flash - U have registered successfully");
     res.redirect("/secret");
 })
 
@@ -44,6 +45,7 @@ router.post("/login", requireNOLogin, async (req, res) => {
     req.session.userId = validUser._id;
     req.session.userName = validUser.userName;
 
+    req.flash("success", "Flash - U have logged in successfully");
     res.redirect("/secret");
 })
 
@@ -51,6 +53,8 @@ router.post("/logout", requireLogin, (req, res) => {
     if (req.session.userId) {
         req.session.destroy();
     }
+
+    //req.flash("success", "Flash - U have logged out");
     res.redirect("/");
 })
 
