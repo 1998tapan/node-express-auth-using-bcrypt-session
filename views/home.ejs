@@ -1,10 +1,18 @@
 <% layout("layouts/boilerplate") -%>
 
-    <h1>AUTH DEMO</h1>
-    <a href="/register">Register</a>
-    <a href="/login">Login</a>
-    <div>
-        <form action="/logout" method="post">
-            <button>Logout</button>
-        </form>
+    <div class="row">
+        <h1 class="text-center">AUTH DEMO</h1>
+        <div class="col-8 offset-2">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Go, find the secret !!</h5>
+                    <div class="card-text">
+                        The purpose of this project is to showcase authenctication from scratch using Bcrypt algorithm along with password hashes and taste added salts
+                    </div>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    <a class="btn btn-secondary" target="_blank" href="https://github.com/1998tapan/">Find me on Github</a>
+                </div>
+            </div>
+        </div>
     </div>

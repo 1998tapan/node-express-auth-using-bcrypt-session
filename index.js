@@ -27,6 +27,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 
 //middleware
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 const sessionConfig = {
     secret: "thisisoursecret", resave: false, saveUninitialized: true,
@@ -40,8 +41,11 @@ app.use(session(sessionConfig))
 app.use(flash());
 
 app.use((req, res, next) => {
+    res.locals.currentUser = req.session.userId;
+    res.locals.userName = req.session.userName;
     res.locals.success = req.flash("success");
     res.locals.failure = req.flash("failure");
+
     next();
 })
 
