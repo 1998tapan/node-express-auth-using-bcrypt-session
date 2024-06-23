@@ -6,8 +6,8 @@ const express = require("express");
 const ejsMate = require("ejs-mate");
 const path = require("path");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 
 const authRouters = require("./routes/auth");
@@ -39,7 +39,7 @@ const store = MongoStore.create({
     mongoUrl: DB_URL,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: process.env.STORE_SECRET
+        secret: process.env.STORE_SECRET || "thisisoursecret"
     }
 });
 
@@ -49,6 +49,7 @@ store.on("error", function (e) {
 
 const sessionSecret = process.env.SESSION_SECRET || "thisisoursecret";
 const sessionConfig = {
+    store,
     secret: sessionSecret, resave: false, saveUninitialized: true,
     cookie: {
         // httpOnly: true
