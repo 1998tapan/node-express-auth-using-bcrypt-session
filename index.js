@@ -2,15 +2,16 @@ const express = require("express");
 const ejsMate = require("ejs-mate");
 const path = require("path");
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const session = require("express-session");
 const flash = require("connect-flash");
 
 const authRouters = require("./routes/auth");
 
-
-
 // db configurations using mongoose
-mongoose.connect('mongodb://127.0.0.1:27017/authDemo')
+const DB_URL = process.env.DB_URL || 'mongodb://127.0.0.1:27017/authDemo';
+
+mongoose.connect(DB_URL)
     .then(() => {
         console.log("MONGO CONNECTION OPEN !!")
     })
@@ -29,8 +30,22 @@ app.set("views", path.join(__dirname, "/views"));
 //middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+
+const store = MongoStore.create({
+    mongoUrl: DB_URL,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: process.env.STORE_SECRET
+    }
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
+const sessionSecret = process.env.SESSION_SECRET || "thisisoursecret";
 const sessionConfig = {
-    secret: "thisisoursecret", resave: false, saveUninitialized: true,
+    secret: sessionSecret, resave: false, saveUninitialized: true,
     cookie: {
         // httpOnly: true
         expires: Date.now() + 1000 * 60 * 60 * 24
